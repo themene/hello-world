@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Simple Chat</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script>
+        async function fetchMessages() {
+            const res = await fetch('/messages');
+            const data = await res.json();
+            const container = document.getElementById('chat');
+            container.innerHTML = '';
+            data.forEach(msg => {
+                const p = document.createElement('p');
+                p.textContent = msg.user + ': ' + msg.text;
+                container.appendChild(p);
+            });
+        }
+        setInterval(fetchMessages, 2000);
+        window.onload = fetchMessages;
+    </script>
+</head>
+<body>
+    <h1>Simple Chat</h1>
+    <div id="chat"></div>
+    <form action="/post" method="post">
+        <input type="text" name="username" placeholder="Your name">
+        <input type="text" name="message" placeholder="Your message">
+        <button type="submit">Send</button>
+    </form>
+</body>
+</html>
